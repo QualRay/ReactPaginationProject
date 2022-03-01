@@ -2,10 +2,8 @@ import './App.css';
 import { Button, Pagination, Table } from 'react-bootstrap'
 import BASE_URL from './helper'
 import { useState } from 'react'
-import swal from 'sweetalert'
-import axios from 'axios'
 
-function App() {
+function LoadMore() {
   //1. State / Hook variable
   const [ student,  setStudent] = useState({
     data:[]
@@ -17,64 +15,8 @@ function App() {
 
 
   //2. Function
-
-  let handleDelete =(e) => {
-      //console.log(e.target.closest('tr').querySelector('td:first-child').innerHTML);
-      var delId = e.target.closest('tr').querySelector('td:first-child').innerHTML;
-      console.log(delId)
-
-      swal({
-        title:"Are you sure?",
-        text:"Once deleted, you will not be able to recover this file!",
-        icon:"warning",
-        buttons: true,
-        dangerMode: true
-      })
-      .then(async (willDelete)=>{
-        if(willDelete){
-
-          try {
-            let po = await axios.delete('http://localhost:1337/api/students/'+delId);
-
-          } catch (error) {
-            console.log(error)
-          }
-        }else{
-          //swal("Something went wrong!")
-        }
-      })
-  }
   
-    let lastPage =(e) =>{
-      //console.log("Last")
-      if(student.meta.pagination.page !== student.meta.pagination.pageCount){
-        getStudents(student.meta.pagination.pageCount);
-      }
-    }
-
-    let nextPage = (e) =>{
-      //console.log("Next")
-      if(student.meta.pagination.page !== student.meta.pagination.pageCount){
-          getStudents(student.meta.pagination.page + 1);
-      }
-     
-    }
-
-    let previousPage = (e) =>{
-      //console.log("Previous")
-      if(student.meta.pagination.page !== 1 ){
-        getStudents(student.meta.pagination.page - 1);
-      }
-      
-    }
-
-    let firstPage = (e) =>{
-      //console.log("First")
-     
-      if(student.meta.pagination.page !== 1){
-        getStudents(1);
-      }
-    }
+   
 
     let goToPage = (e) =>{
       //console.log(e.target.innerHTML);
@@ -137,7 +79,7 @@ function App() {
   return (
     <>
       <div className="d-flex justify-content-center">
-        <h1>Read Operations</h1>
+        <h1>Load More Feature</h1>
        
 
       <Button onClick={ (e)=>{ getStudents() }} >Fetch Data</Button><br /><br />
@@ -171,7 +113,7 @@ function App() {
                   <td>
                     <Button variant="success" size="sm">View</Button>&nbsp;
                     <Button variant="primary" size="sm">Edit</Button>&nbsp;
-                    <Button variant="danger" onClick={(e)=>{ handleDelete(e) }} size="sm">Delete</Button>&nbsp;
+                    <Button variant="danger" size="sm">Delete</Button>&nbsp;
                   </td>
                 </tr>
               
@@ -183,24 +125,7 @@ function App() {
         </tbody>
         </Table>
 
-        <Pagination className="d-flex justify-content-center">
-              <Pagination.First onClick={ (e)=>{ firstPage(e); } } />
-              <Pagination.Prev onClick={ (e)=>{ previousPage(e); } } />
-
-              {
-               
-                paginationItem.map(function(currentValue, index, arr){
-                  return currentValue
-                })
-
-              }
-            
-              
-              
-               
-              <Pagination.Next onClick={ (e)=>{ nextPage(e); } } />
-              <Pagination.Last onClick={ (e)=>{ lastPage(e); } } />
-        </Pagination>
+       
        </> 
 
       } 
@@ -208,4 +133,4 @@ function App() {
   )
 }
 
-export default App;
+export default LoadMore;
