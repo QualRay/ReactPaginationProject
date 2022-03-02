@@ -7,7 +7,7 @@ import LoadMore from './LoadMore'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <LoadMore />
   </React.StrictMode>,
   document.getElementById('root')
 );

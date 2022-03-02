@@ -6,7 +6,15 @@ import { useState } from 'react'
 function LoadMore() {
   //1. State / Hook variable
   const [ student,  setStudent] = useState({
-    data:[]
+    data:[], //JS Object [{},{}] //Array of a Object
+    meta:{
+      pagination:{
+        page:'',
+        pageCount:'',
+        pageSize:'',
+        total:''
+      }
+    }  //JS Object
   });
 
   const [paginationItem, setPaginationItem] = useState([
@@ -16,7 +24,13 @@ function LoadMore() {
 
   //2. Function
   
-   
+   let loadMore = (e) => {
+      //alert("Clicked");
+     
+        getStudents( student.meta.pagination.page +1);
+      
+     
+   }
 
     let goToPage = (e) =>{
       //console.log(e.target.innerHTML);
@@ -43,24 +57,14 @@ function LoadMore() {
         //Set karne se pehle data kya hey
         
         //now set the data in student hook variable
-        setStudent(data);
+        setStudent({
+          ...student,
+          data: student.data.concat(data.data),
+          meta: data.meta
+        });
         //set karne ke baad data kya aaya
         
-      var start = data.meta.pagination.page;
-      var arr =[]; //empty array for
-
-      for( let i=1; i<= data.meta.pagination.pageCount; i++ ){  
-        if(i === start){
-          arr.push(<Pagination.Item active onClick = {(e)=>{ goToPage(e)}}>{i}</Pagination.Item>);
-        }else{
-          arr.push(<Pagination.Item onClick = {(e)=>{ goToPage(e)}}>{i}</Pagination.Item>);
-        }       
-         
-      }
-
-      setPaginationItem(arr);
-
-        
+      
         //array.map(function(currentValue, index, arr), thisValue)
         
       }).catch( (err)=>{
@@ -124,7 +128,18 @@ function LoadMore() {
           
         </tbody>
         </Table>
-
+        <>
+        {
+          (student.meta.pagination.page !== student.meta.pagination.pageCount) && 
+          <div className="d-flex justify-content-center">
+            <Button variant="primary" onClick={ (e) => { loadMore(e); }}>Load more...</Button>
+          </div>
+        }
+         
+       
+     
+  
+</>
        
        </> 
 

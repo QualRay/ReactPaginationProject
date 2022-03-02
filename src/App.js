@@ -17,9 +17,10 @@ function App() {
 
 
   //2. Function
-
+  
   let handleDelete =(e) => {
       //console.log(e.target.closest('tr').querySelector('td:first-child').innerHTML);
+      var tr = e.target.closest('tr');
       var delId = e.target.closest('tr').querySelector('td:first-child').innerHTML;
       console.log(delId)
 
@@ -34,8 +35,9 @@ function App() {
         if(willDelete){
 
           try {
-            let po = await axios.delete('http://localhost:1337/api/students/'+delId);
-
+            let po = await axios.delete(`${BASE_URL}/api/students/${delId}`);
+                tr.remove();
+                swal("Success!", "Student removed successfully!", "success");
           } catch (error) {
             console.log(error)
           }
